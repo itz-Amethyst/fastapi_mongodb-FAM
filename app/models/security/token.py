@@ -15,4 +15,4 @@ class RefreshToken(Base):
     user_id: Mapped[str] = mapped_column(
         ForeignKey("user_account.user_id", ondelete="CASCADE"),
     )
-    user: Mapped["User"] = relationship(back_populates="refresh_tokens")
+    user: Mapped["Account"] = relationship(back_populates="refresh_tokens")

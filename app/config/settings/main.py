@@ -1,6 +1,6 @@
 from functools import lru_cache
 
-from pydantic import PostgresDsn
+from pydantic import PostgresDsn , computed_field
 from pydantic.v1 import BaseSettings
 from pydantic_core import MultiHostUrl
 from app.config.settings.db.main import Database
@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int
     DATE_FORMAT: str
 
-    @computed_field  # type: ignore[misc]
+    @computed_field
     @property
     def SQLALCHEMY_DATABASE_URI( self ) -> PostgresDsn:
         return MultiHostUrl.build(
@@ -28,11 +28,10 @@ class Settings(BaseSettings):
 
     class Config:
         env_file = "./.env"
+        case_sensitive=False
 
 
 @lru_cache(maxsize = 1)
-def get_settings():
+def get_settings() -> Settings:
     return Settings()
 
-
-settings = get_settings()

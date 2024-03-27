@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped , mapped_column , relationship
 from app.models.base import Base
 
 
-class User(Base):
+class Account(Base):
     __tablename__ = 'user_account'
 
     user_id: Mapped[str] = mapped_column(
@@ -16,4 +16,4 @@ class User(Base):
         String(256) , nullable = False , unique = True , index = True
     )
     hashed_password: Mapped[str] = mapped_column(String(128) , nullable = False)
-    refresh_tokens: Mapped[list["RefreshToken"]] = relationship(back_populates = "user")
+    refresh_tokens: Mapped[list["RefreshToken"]] = relationship(back_populates = "account")

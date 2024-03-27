@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.setup.helpers.route_name import use_route_names_as_operation_ids
+from app.setup.helper.route_name import use_route_names_as_operation_ids
 
 
 def setup_routers(app: FastAPI) -> None:

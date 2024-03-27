@@ -2,9 +2,9 @@ from fastapi import FastAPI
 
 from app.core.config import settings
 
-from app.setup.helpers.middleware import setup_cors_middleware
-from app.setup.helpers.static import serve_static_app
-from app.setup.routes.main import setup_routers
+from app.setup.helper.middleware import setup_cors_middleware
+from app.setup.helper.static import serve_static_app
+from app.setup.route.main import setup_routers
 
 
 def create_app():
