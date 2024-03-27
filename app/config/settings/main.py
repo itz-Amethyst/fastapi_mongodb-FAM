@@ -3,16 +3,12 @@ from functools import lru_cache
 from pydantic import PostgresDsn
 from pydantic.v1 import BaseSettings
 from pydantic_core import MultiHostUrl
+from app.config.settings.db.main import Database
 
 
 class Settings(BaseSettings):
-    POSTGRES_USER: str
-    POSTGRES_PASSWORD: str
-    POSTGRES_HOST: str
-    POSTGRES_PORT: int
-    POSTGRES_DB: str
-    PGADMIN_EMAIL: str
-    PGADMIN_PASSWORD: str
+
+    database: Database
     SECRET_KEY: str
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int
@@ -23,11 +19,11 @@ class Settings(BaseSettings):
     def SQLALCHEMY_DATABASE_URI( self ) -> PostgresDsn:
         return MultiHostUrl.build(
             scheme = "postgresql+psycopg" ,
-            username = self.POSTGRES_USER ,
-            password = self.POSTGRES_PASSWORD ,
-            host = self.POSTGRES_SERVER ,
-            port = self.POSTGRES_PORT ,
-            path = self.POSTGRES_DB ,
+            username = self.database.POSTGRES_USER ,
+            password = self.database.POSTGRES_PASSWORD ,
+            host = self.database.POSTGRES_SERVER ,
+            port = self.database.POSTGRES_PORT ,
+            path = self.database.POSTGRES_DB ,
         )
 
     class Config:
