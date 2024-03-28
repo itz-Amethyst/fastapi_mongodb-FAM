@@ -1,12 +1,13 @@
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
+from app.config.settings.main import Settings
 
 
 def setup_cors_middleware(app):
-    if settings.BACKEND_CORS_ORIGINS:
+    if Settings.general.BACKEND_CORS_ORIGINS:
         app.add_middleware(
             CORSMiddleware,
-            allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
+            allow_origins=[str(origin) for origin in Settings.general.BACKEND_CORS_ORIGINS],
             allow_credentials=True,
             allow_methods=["*"],
             expose_headers=["Content-Range", "Range"],
@@ -15,7 +16,8 @@ def setup_cors_middleware(app):
         # Guards against HTTP Host Header attacks
         app.add_middleware(
             TrustedHostMiddleware ,
-            allowed_hosts = get_settings().security.allowed_hosts ,
+            #? TO Allow all for now
+            # allowed_hosts = get_settings().security.allowed_hosts ,
         )
 
 
