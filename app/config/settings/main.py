@@ -1,13 +1,8 @@
 from functools import lru_cache
 from pathlib import Path
-from typing import Union , List , Optional
 
-from pydantic import PostgresDsn , computed_field , field_validator
 from pydantic.v1 import BaseSettings
-from pydantic_core import MultiHostUrl
-# from app.config.settings import MongoDB, Email, General, JWT, SMTP, Service, TOTP
-from app.config.settings.general.main import General
-from app.config.settings.db.mongo import MongoDB
+from app.config.settings import MongoDB, Email, General, JWT, SMTP, Service, TOTP
 
 PROJECT_DIR = Path(__file__).parent.parent.parent
 print(PROJECT_DIR)
@@ -18,12 +13,12 @@ class Settings(BaseSettings):
     # database: Database
 
     database: MongoDB
-    # email_platform: Email
+    email_platform: Email
     general: General
-    # jwt: JWT
-    # smtp: SMTP
-    # service: Service
-    # totp: TOTP
+    jwt: JWT
+    smtp: SMTP
+    service: Service
+    totp: TOTP
 
 
     # @computed_field

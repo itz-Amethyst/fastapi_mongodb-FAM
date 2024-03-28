@@ -1,7 +1,7 @@
 import secrets
 from typing import List , Optional , Union
 
-from pydantic import AnyHttpUrl , field_validator , HttpUrl , EmailStr , validator
+from pydantic import AnyHttpUrl , field_validator , HttpUrl , EmailStr
 from pydantic.v1 import BaseSettings
 
 
@@ -27,18 +27,17 @@ class General(BaseSettings):
     USERS_OPEN_REGISTRATION: bool = True
 
     @classmethod
-    @validator("BACKEND_CORS_ORIGINS" , pre = True)
-    def assemble_cors_origins( self , v: Union[str , List[str]] ) -> Union[List[str] , str]:
+    @field_validator("BACKEND_CORS_ORIGINS" , mode = "before")
+    def assemble_cors_origins( cls , v: Union[str , List[str]] ) -> Union[List[str] , str]:
         if isinstance(v , str) and not v.startswith("["):
             return [i.strip() for i in v.split(",")]
         elif isinstance(v , (list , str)):
             return v
         raise ValueError(v)
 
-    #
     @classmethod
-    @validator("SENTRY_DSN" , pre = True)
-    def sentry_dsn_can_be_blank( self , v: str ) -> Optional[str]:
+    @field_validator("SENTRY_DSN" , mode = "before")
+    def sentry_dsn_can_be_blank( cls , v: str ) -> Optional[str]:
         if isinstance(v , str) and len(v) == 0:
             return None
         return v
