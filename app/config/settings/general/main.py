@@ -1,12 +1,21 @@
 import secrets
+from pathlib import Path
 from typing import List , Optional , Union
 
 from pydantic import AnyHttpUrl , field_validator , HttpUrl , EmailStr
 from pydantic.v1 import BaseSettings
+from app import __version__
+from app.core.enums.log import LogLevel
 
 
 class General(BaseSettings):
     SECRET_KEY: str = secrets.token_urlsafe(32)
+    DEBUG: bool = True
+    VERSION: str = __version__
+    LOG_LEVEL: str = LogLevel.INFO
+    ENABLE_FILE_LOG_SYSTEM: bool = True
+    DOCS_FAVICON_PATH: Path = "test/fav.ico"
+    HOST_PORT: int = 8000
 
     API_V1_STR: str = "/api/v1"
 
