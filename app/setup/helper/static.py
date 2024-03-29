@@ -2,6 +2,8 @@ from starlette.requests import Request
 from starlette.responses import FileResponse
 from starlette.staticfiles import StaticFiles
 
+from app.config.settings.main import Settings
+
 
 def serve_static_app(app):
     app.mount("/", StaticFiles(directory="static"), name="static")
@@ -11,7 +13,7 @@ def serve_static_app(app):
         """Serves static assets on 404"""
         response = await call_next(request)
         path = request["path"]
-        if path.startswith(settings.API_PATH) or path.startswith("/docs"):
+        if path.startswith(Settings.general.API_V1_STR) or path.startswith("/docs"):
             return response
         if response.status_code == 404:
             return FileResponse("static/index.html")

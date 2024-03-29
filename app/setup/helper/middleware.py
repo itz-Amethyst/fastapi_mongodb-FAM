@@ -1,7 +1,7 @@
 from starlette.middleware.cors import CORSMiddleware
 from starlette.middleware.trustedhost import TrustedHostMiddleware
 from app.config.settings.main import Settings
-
+from app.middlewares.correlation import CorrelationMiddleware
 
 def setup_cors_middleware(app):
     if Settings.general.BACKEND_CORS_ORIGINS:
@@ -18,6 +18,9 @@ def setup_cors_middleware(app):
             TrustedHostMiddleware ,
             #? TO Allow all for now
             # allowed_hosts = get_settings().security.allowed_hosts ,
+        )
+        app.add_middleware(
+            CorrelationMiddleware
         )
 
 
