@@ -6,6 +6,8 @@ from starlette import status
 
 from app.config.settings.main import Settings
 from app.messages.code.main import responses
+from app.schemas.error.main import CommonHTTPError , APIValidationError
+from app.setup.helper.custom_exception import setup_custom_exceptions
 
 from app.setup.helper.middleware import setup_cors_middleware
 from app.setup.helper.static import serve_static_app
@@ -57,6 +59,8 @@ def create_app():
     setup_routers(app)
     setup_cors_middleware(app)
     serve_static_app(app)
+    # Todo
+    setup_custom_exceptions(app)
     return app
 
 
