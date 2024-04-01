@@ -1,0 +1,6 @@
+{
+  "project_name": "FastApi_MongoDB(FAM)",
+  "project_slug": "{{ cookiecutter.project_name|lower|replace(' ', '-') }}",
+  "author": "Itz-Amethyst",
+  "debug": false
+}
