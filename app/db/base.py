@@ -1,3 +1,3 @@
 from odmantic import Model
 
-BaseModel = Model
+BaseModel_DB = Model
