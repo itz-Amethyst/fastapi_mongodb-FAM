@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "fastapi-mongodb-fam"
+version = "0.1.0"
+description = "A compounded FastApi & MongoDb app with Odmantic Selected as an engine"
+authors = ["itz-amethyst <pransermi@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = {version = "^0.110.1", extras = ["all"]}
+structlog = "^24.1.0"
+raven = "^6.10.0"
+pymongo = "^4.6.3"
+celery = "^5.3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
