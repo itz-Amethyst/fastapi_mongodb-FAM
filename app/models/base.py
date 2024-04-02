@@ -1,9 +1,21 @@
 from datetime import datetime
 
-from sqlalchemy import DateTime , func
-from sqlalchemy.orm import Mapped , DeclarativeBase , mapped_column
+from odmantic import Field
 
+from app.db.base import BaseModel_DB
 
-class Base(DeclarativeBase):
-    create_time: Mapped[datetime] = mapped_column(DateTime(timezone = True), server_default = func.now())
-    update_time: Mapped[datetime] = mapped_column(DateTime(timezone = True) , server_default = func.now() , onupdate = func.now())
+def datetime_now_sec():
+    return datetime.now().replace(microsecond=0)
+
+def table_name_decorator(cls):
+    # Get the table name from the class name (convert to lowercase)
+    cls.Settings.name = cls.__name__.lower()
+    return cls
+
+@table_name_decorator
+class Base(BaseModel_DB):
+    create_time: datetime = Field(default_factory = datetime_now_sec)
+    modified: datetime = Field(default_factory = datetime_now_sec, )
+
+    class Settings:
+        use_state_management = True

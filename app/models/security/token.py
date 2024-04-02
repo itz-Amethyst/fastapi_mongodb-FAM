@@ -1,18 +1,16 @@
-from sqlalchemy import  String , BigInteger , Boolean , ForeignKey
-from sqlalchemy.orm import Mapped , mapped_column , relationship
+from __future__ import annotations
+
+from datetime import datetime
+
+from odmantic import Reference , Field
 
 from app.models.base import Base
 
-class RefreshToken(Base):
-    __tablename__ = "refresh_token"
+from app.models.user.main import User
 
-    id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
-    refresh_token: Mapped[str] = mapped_column(
-        String(512), nullable=False, unique=True, index=True
-    )
-    used: Mapped[bool] = mapped_column(Boolean, nullable=False, default=False)
-    exp: Mapped[int] = mapped_column(BigInteger, nullable=False)
-    user_id: Mapped[str] = mapped_column(
-        ForeignKey("user_account.user_id", ondelete="CASCADE"),
-    )
-    user: Mapped["Account"] = relationship(back_populates="refresh_tokens")
+
+class Token(Base):
+    token: str
+    authenticates_id: User = Reference()
+    used: bool = Field(default = False)
+    expiration_date: datetime
