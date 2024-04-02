@@ -8,6 +8,8 @@ from odmantic import AIOEngine
 from app.db.base import BaseModel_DB
 from app.config.settings.main import Settings
 from app.db.session import get_engine
+from app.schemas.response.pagination import Paginated , PaginationParams
+from app.schemas.response.sorting import SortOrder , SortingParams
 
 ModelType = TypeVar("ModelType", bound=BaseModel_DB)
 CreateSchemaType = TypeVar("CreateSchemaType", bound=BaseModel)
@@ -30,9 +32,24 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
     async def get(self, db: AgnosticDatabase, id: Any) -> Optional[ModelType]:
         return await self.engine.find_one(self.model, self.model.id == id)
 
-    async def get_multi(self, db: AgnosticDatabase, *, page: int = 0, page_break: bool = False) -> list[ModelType]:
-        offset = {"skip": page * Settings.general.MULTI_MAX, "limit": Settings.general.MULTI_MAX} if page_break else {}
-        return await self.engine.find(self.model, **offset)
+
+    async def get_multi(self, db: AgnosticDatabase, *, page_break: bool = False, paging_params: "PaginationParams",
+        sorting_params: "SortingParams",) -> list[ModelType]:
+
+        offset = {"skip": paging_params.skip, "limit": paging_params.limit} if page_break else {}
+        # Sorting
+        sort_field = getattr(self.model , sorting_params.sort) if hasattr(self.model , sorting_params.sort) else getattr(self.model , sorting_params.sort , "created_at")
+        if sort_field is None:
+            raise ValueError(f"Invalid sort field: {sorting_params.sort}")
+        sort_expr = sort_field.desc() if sorting_params.order == SortOrder.DESC else sort_field.asc()
+        result = self.engine.find(self.model, sort = sort_expr, **offset)
+        return await Paginated(
+            page = paging_params.page,
+            limit = paging_params.limit,
+            total = self.engine.count(self.model),
+            results = result
+        )
+
 
     async def create(self, db: AgnosticDatabase, *, obj_in: CreateSchemaType) -> ModelType:
         obj_in_data = jsonable_encoder(obj_in)

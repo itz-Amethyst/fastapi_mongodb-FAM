@@ -29,7 +29,7 @@ class General(BaseSettings):
     SENTRY_DSN: Optional[HttpUrl] = None
 
     # GENERAL SETTINGS
-    MULTI_MAX: int = 20
+    MULTI_MAX: int = 12
 
     FIRST_SUPERUSER: EmailStr
     FIRST_SUPERUSER_PASSWORD: str
