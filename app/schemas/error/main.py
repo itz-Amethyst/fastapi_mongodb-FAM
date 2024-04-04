@@ -11,7 +11,7 @@ class ValidationErrorDetail(BaseModel):
     context: Optional[Dict[str, Any]] = None
 
 class APIValidationError(BaseModel):
-    errors: List[ValidationError]
+    errors: List[ValidationErrorDetail]
 
     @classmethod
     def from_pydantic( cls, exc: "ValidationError" ) -> "APIValidationError":
