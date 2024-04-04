@@ -7,7 +7,7 @@ import uvicorn
 from app.middlewares.correlation import correlation_id
 
 from app.config.logger.helper.weekly_rotate import WeeklyRotating
-from app.config.settings.main import Settings
+from app.config.settings import settings
 
 if sys.version_info >= (3, 10):
     from typing import TypeAlias
@@ -15,8 +15,7 @@ else:
     from typing_extensions import TypeAlias
 
 EventDict: TypeAlias = MutableMapping[str, Any]
-
-LOG_LEVEL = "DEBUG" if Settings.general.DEBUG else str(Settings.general.LOG_LEVEL)
+LOG_LEVEL = "DEBUG" if settings.general.DEBUG else str(settings.general.LOG_LEVEL)
 
 def add_correlation_id(_, __, event_dict: EventDict) -> EventDict:
     if cid := correlation_id.get():
@@ -70,21 +69,21 @@ LOGGING_CONFIG: Dict[str, Any] = {
                     '[%(module)s]: %(message)s'
                 ) ,
                 'datefmt': '%Y/%m/%d %H:%M:%S'
-            }} if Settings.general.ENABLE_FILE_LOG_SYSTEM else {}),
+            }} if settings.general.ENABLE_FILE_LOG_SYSTEM else {}),
         **uvicorn.config.LOGGING_CONFIG["formatters"],
     },
     "handlers": {
         "default": {
             "level": LOG_LEVEL,
             "class": "logging.StreamHandler",
-            "formatter": "json" if not Settings.general.DEBUG else "colored",
+            "formatter": "json" if not settings.general.DEBUG else "colored",
         },
         # File
         **({"file": {
             "()": WeeklyRotating ,
             "formatter": "file",
             "level": LOG_LEVEL
-        }} if Settings.general.ENABLE_FILE_LOG_SYSTEM else {}) ,
+        }} if settings.general.ENABLE_FILE_LOG_SYSTEM else {}) ,
     },
     "loggers": {
         "": {
@@ -109,7 +108,7 @@ LOGGING_CONFIG: Dict[str, Any] = {
     },
 }
 
-if Settings.general.ENABLE_FILE_LOG_SYSTEM:
+if settings.general.ENABLE_FILE_LOG_SYSTEM:
     LOGGING_CONFIG["root"]["handlers"].append("file")
 
 

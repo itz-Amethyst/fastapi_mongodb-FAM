@@ -1,7 +1,7 @@
 import logging
 from datetime import date
 
-from app.config.settings.main import PROJECT_DIR
+from app.config.settings.helper import PROJECT_DIR
 
 class WeeklyRotating(logging.FileHandler):
     def __init__(self):

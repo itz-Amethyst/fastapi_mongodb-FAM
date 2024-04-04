@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.responses import ORJSONResponse
 from starlette import status
 
-from app.config.settings.main import Settings
+from app.config.settings import settings
 from app.messages.code.main import responses
 from app.schemas.error.main import CommonHTTPError , APIValidationError
 from app.setup.helper.custom_exception import setup_custom_exceptions
@@ -29,14 +29,13 @@ tags_metadata = [
     },
 ]
 
-
 def create_app():
-    description = f"{Settings.general.PROJECT_NAME} API"
+    description = f"{settings.general.PROJECT_NAME} API"
     app = FastAPI(
-        title=Settings.general.PROJECT_NAME,
-        debug = Settings.general.DEBUG,
-        version = Settings.general.VERSION,
-        openapi_url=f"{Settings.general.API_V1_STR}/openapi.json",
+        title=settings.general.PROJECT_NAME,
+        debug = settings.general.DEBUG,
+        version = settings.general.VERSION,
+        openapi_url=f"{settings.general.API_V1_STR}/openapi.json",
         docs_url="/docs/",
         default_response_class = ORJSONResponse,
         openapi_tags = tags_metadata,
