@@ -1,15 +1,16 @@
 from functools import lru_cache
-from pathlib import Path
+from pydantic_settings import BaseSettings
 
-from pydantic.v1 import BaseSettings
-from pydantic import MongoDsn
-from app.config.settings import MongoDB, Email, General, JWT, SMTP, Service, TOTP
+from app.config.settings.db.mongo import MongoDB
+from app.config.settings.email.main import Email
+from app.config.settings.general.main import General
+from app.config.settings.jwt.main import JWT
+from app.config.settings.smtp.main import SMTP
+from app.config.settings.totp.main import TOTP
 
 #! This adds support for 'mongodb+srv' connection schemas when using e.g. MongoDB Atlas
 # https://www.mongodb.com/developer/products/mongodb/srv-connection-strings/
 # MongoDsn.allowed_schemes.add("mongodb+srv")
-
-PROJECT_DIR: Path = Path(__file__).parent.parent.parent
 
 
 class Settings(BaseSettings):
@@ -17,13 +18,14 @@ class Settings(BaseSettings):
     # For Postgresql
     # database: Database
 
-    database: MongoDB
-    email_platform: Email
-    general: General
-    jwt: JWT
-    smtp: SMTP
-    service: Service
-    totp: TOTP
+    database: MongoDB = MongoDB()
+    # test_value: str
+    email_platform: Email = Email()
+    general: General = General()
+    jwt: JWT = JWT()
+    smtp: SMTP = SMTP()
+    # service: Service
+    totp: TOTP = TOTP()
 
 
     # @computed_field
@@ -38,9 +40,6 @@ class Settings(BaseSettings):
     #         path = self.database.POSTGRES_DB ,
     #     )
 
-    class Config:
-        env_file = f"{PROJECT_DIR}/.env"
-        case_sensitive=False
 
 
 @lru_cache(maxsize = 1)
