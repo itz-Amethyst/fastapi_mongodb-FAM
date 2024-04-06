@@ -1,12 +1,11 @@
 from typing import Generic, List, TypeVar
 from odmantic import Model
 from pydantic import Field , BaseModel
-from pydantic.generics import GenericModel
 
 SchemaType = TypeVar("SchemaType", bound= Model)
 
 
-class Paginated(GenericModel, Generic[SchemaType]):
+class Paginated(BaseModel, Generic[SchemaType]):
     page: int
     limit: int
     total: int
