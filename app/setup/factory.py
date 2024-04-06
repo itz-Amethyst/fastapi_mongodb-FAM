@@ -12,6 +12,7 @@ from app.setup.helper.custom_exception import setup_custom_exceptions
 from app.setup.helper.middleware import setup_cors_middleware
 from app.setup.helper.static import serve_static_app
 from app.setup.route.main import setup_routers
+from app.config.logger.main import configure_logging
 
 
 tags_metadata = [
@@ -30,12 +31,13 @@ tags_metadata = [
 ]
 
 def create_app():
+    configure_logging()
     description = f"{settings.general.PROJECT_NAME} API"
     app = FastAPI(
         title=settings.general.PROJECT_NAME,
         debug = settings.general.DEBUG,
         version = settings.general.VERSION,
-        openapi_url=f"{settings.general.API_V1_STR}/openapi.json",
+        openapi_url=f"/api/{settings.general.API_V1_STR}/openapi.json",
         docs_url="/docs/",
         default_response_class = ORJSONResponse,
         openapi_tags = tags_metadata,

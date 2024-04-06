@@ -20,7 +20,7 @@ class General(BaseSettings):
     DOCS_FAVICON_PATH: Path = config.get("DOCS_FAVICON_PATH" , "test/fav.ico")
     HOST_PORT: int = config.get("HOST_PORT" , 8000)
 
-    API_V1_STR: str = config.get("API_V1_STR" , "/api/v1")
+    API_V1_STR: str = config.get("API_V1_STR" , "v1")
 
     SERVER_NAME: str = config.get("SERVER_NAME" , "Test_name")
     SERVER_HOST: AnyHttpUrl = config.get("SERVER_HOST" , "http://localhost")

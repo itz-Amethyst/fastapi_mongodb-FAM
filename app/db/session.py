@@ -1,4 +1,4 @@
-from app.config.settings.main import Settings
+from app.config.settings import settings
 from odmantic import AIOEngine
 from motor.core import AgnosticDatabase
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -16,11 +16,11 @@ class _MongoClientSingleton:
         return cls._instance
 
     def _initialize_mongodb_client( self ):
-        self.mongodb_client = AsyncIOMotorClient(Settings.database.MONGO_DATABASE_URI , driver = Driver_Info)
-        self.engine = AIOEngine(client = self.mongodb_client , database = Settings.database.MONGO_DATABASE)
+        self.mongodb_client = AsyncIOMotorClient(settings.database.MONGO_DATABASE_URI , driver = Driver_Info)
+        self.engine = AIOEngine(client = self.mongodb_client , database = settings.database.MONGO_DATABASE)
 
 def MongoDataBase() -> AgnosticDatabase:
-    return _MongoClientSingleton().mongodb_client[Settings.database.MONGO_DATABASE]
+    return _MongoClientSingleton().mongodb_client[settings.database.MONGO_DATABASE]
 
 def get_engine() -> AIOEngine:
     return _MongoClientSingleton().engine
