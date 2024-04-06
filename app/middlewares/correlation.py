@@ -7,8 +7,9 @@ from contextvars import ContextVar
 from typing import TYPE_CHECKING, Callable, Optional
 from uuid import UUID, uuid4
 
-import structlog
 from starlette.datastructures import Headers, MutableHeaders
+
+from app.utils.logger import logger_system
 
 if sys.version_info >= (3, 10):
     from typing import TypeAlias
@@ -17,9 +18,6 @@ else:
 
 if TYPE_CHECKING:
     from starlette.types import ASGIApp, Message, Receive, Scope, Send
-    from structlog.stdlib import BoundLogger
-
-logger: "BoundLogger" = structlog.get_logger()
 
 # Context variable to store the correlation ID
 correlation_id: ContextVar[Optional[str]] = ContextVar("correlation_id", default=None)
@@ -71,7 +69,7 @@ class CorrelationMiddleware:
             id_ = self.id_generator()
         elif self.id_validator and not self.id_validator(header_value):
             id_ = self.id_generator()
-            await logger.awarning(
+            await logger_system.awarning(
                 "Generated new correlation ID because the provided one was invalid",
                 correlation_id=id_,
             )

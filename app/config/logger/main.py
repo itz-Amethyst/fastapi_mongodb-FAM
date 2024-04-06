@@ -140,5 +140,3 @@ def configure_logging() -> None:
         cache_logger_on_first_use=True,
     )
 
-#? For catching and writing logs
-logger_system = structlog.get_logger()
