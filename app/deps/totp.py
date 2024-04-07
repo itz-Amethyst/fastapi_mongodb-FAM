@@ -1,12 +1,7 @@
-from typing import Generator
-
 from fastapi import Depends, HTTPException, status
-from fastapi.security import OAuth2PasswordBearer
-from jose import jwt
-from pydantic import ValidationError
 from motor.core import AgnosticDatabase
 
-from app import crud, models, schemas
+from app import crud, models
 from app.deps import reusable_oauth2
 from app.deps.token import get_token_payload
 from app.deps.db import get_db
