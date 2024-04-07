@@ -13,6 +13,7 @@ from app.setup.helper.middleware import setup_cors_middleware
 from app.setup.helper.static import serve_static_app
 from app.setup.route.main import setup_routers
 from app.config.logger.main import configure_logging
+from app.setup.helper.init_db import init_db
 
 
 tags_metadata = [
@@ -32,6 +33,7 @@ tags_metadata = [
 
 def create_app():
     configure_logging()
+    init_db()
     description = f"{settings.general.PROJECT_NAME} API"
     app = FastAPI(
         title=settings.general.PROJECT_NAME,
