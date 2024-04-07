@@ -6,8 +6,8 @@ from motor.core import AgnosticDatabase
 from odmantic import AIOEngine
 
 from app.db.base import BaseModel_DB
-from app.config.settings.main import Settings
 from app.db.session import get_engine
+from app.models.user.main import User
 from app.schemas.response.pagination import Paginated , PaginationParams
 from app.schemas.response.sorting import SortOrder , SortingParams
 
@@ -42,7 +42,13 @@ class CRUDBase(Generic[ModelType, CreateSchemaType, UpdateSchemaType]):
         if sort_field is None:
             raise ValueError(f"Invalid sort field: {sorting_params.sort}")
         sort_expr = sort_field.desc() if sorting_params.order == SortOrder.DESC else sort_field.asc()
-        result = self.engine.find(self.model, sort = sort_expr, **offset)
+
+        #! Avoided DRY pattern for CRUDToken
+        if hasattr(self, "_is_child_crud_token") and self._is_child_crud_token:
+            result = await self.engine.find(User, (User.refresh_tokens.in_([self.user.refresh_tokens])), **self.offset)
+        else:
+            result = self.engine.find(self.model, sort = sort_expr, **offset)
+
         return await Paginated(
             page = paging_params.page,
             limit = paging_params.limit,
