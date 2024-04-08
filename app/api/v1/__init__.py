@@ -2,6 +2,7 @@ from fastapi import APIRouter
 
 from app.config.settings import settings
 from app.messages.api.main import JWT_ERROR_USER_REMOVED
+from app.api.v1.endpoints import user, login, service
 
 router = APIRouter(
     prefix = f'/{settings.general.API_V1_STR}',
@@ -29,3 +30,6 @@ router = APIRouter(
         } ,
     }
 )
+router.include_router(user.router, prefix = '/users', tags = ["Users"])
+router.include_router(login.router, prefix = '/login', tags = ["Login"])
+router.include_router(service.router, prefix = '/service', tags = ["Service"])
