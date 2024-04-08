@@ -9,7 +9,7 @@ from app import crud, models, schemas
 from app import deps
 from app.config.settings import settings
 from app.core import security
-from app.utilities import (
+from app.utils.email.main import (
     send_new_account_email,
 )
 
