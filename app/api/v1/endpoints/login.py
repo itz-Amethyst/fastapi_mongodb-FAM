@@ -8,28 +8,14 @@ from app import crud, models, schemas
 from app import deps
 from app.core import security
 from app.config.settings import settings
-from app.utilities import (
+from app.utils import (
     send_reset_password_email,
     send_magic_login_email,
 )
 
 router = APIRouter()
 
-"""
-https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Authentication_Cheat_Sheet.md
-Specifies minimum criteria:
-    - Change password must require current password verification to ensure that it's the legitimate user.
-    - Login page and all subsequent authenticated pages must be exclusively accessed over TLS or other strong transport.
-    - An application should respond with a generic error message regardless of whether:
-        - The user ID or password was incorrect.
-        - The account does not exist.
-        - The account is locked or disabled.
-    - Code should go through the same process, no matter what, allowing the application to return in approximately
-      the same response time.
-    - In the words of George Orwell, break these rules sooner than do something truly barbaric.
 
-See `security.py` for other requirements.
-"""
 
 @router.post("/magic/{email}", response_model=schemas.WebToken)
 async def login_with_magic_link(*, db: AgnosticDatabase = Depends(deps.get_db), email: str) -> Any:

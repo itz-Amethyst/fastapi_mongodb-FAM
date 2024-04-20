@@ -1,5 +1,5 @@
 from app.models import Account
-from app.schemas.response.main import ResponseWithPagination
+from app.schemas.response.pagination import ResponseWithPagination
 from app.manager.account import AccountManager
 from app.routes.base import router
 router.tags = ['User']
