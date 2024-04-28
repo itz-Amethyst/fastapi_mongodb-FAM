@@ -4,7 +4,7 @@ from app.config.settings import settings
 from pydantic import ValidationError
 from jose import jwt
 
-from app.deps import reusable_oauth2
+from app.deps.bearer import reusable_oauth2
 
 
 def get_token_payload(token: str) -> schemas.TokenPayload:

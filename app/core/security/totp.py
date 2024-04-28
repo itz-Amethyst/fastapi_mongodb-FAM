@@ -6,7 +6,7 @@ from app.schemas.response.totp import NewTOTP
 
 from passlib.totp import TOTP
 
-totp_factory: TOTP = TOTP.using(secrets={"1": settings.TOTP_SECRET_KEY}, issuer=settings.SERVER_NAME, alg=settings.TOTP_ALGO)
+totp_factory: TOTP = TOTP.using(secrets={"1": settings.totp.TOTP_SECRET_KEY}, issuer=settings.general.SERVER_NAME, alg=settings.totp.TOTP_ALGO)
 
 
 def create_new_totp(*, label: str, uri: Optional[str] = None) -> NewTOTP:
