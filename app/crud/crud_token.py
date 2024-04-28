@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+from typing import Type
+
 from motor.core import AgnosticDatabase
 
 from app.crud.base import CRUDBase
@@ -11,8 +14,8 @@ from app.schemas.response.sorting import SortingParams
 class CRUDToken(CRUDBase[Token, RefreshTokenCreate, RefreshTokenUpdate]):
     # Everything is user-dependent
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, model: Type[Token]):
+        super().__init__(model)
         self.offset_token = None
         self.user = None
         self._is_child_crud_token = True
